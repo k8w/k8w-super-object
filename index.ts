@@ -6,34 +6,40 @@
  * @param sources
  * @returns {Object}
  */
-Object.merge = function(target:any, ...sources: any[]){
-    for(let i=0; i<sources.length; ++i){
+Object.merge = function (target: any, ...sources: any[]) {
+    for (let i = 0; i < sources.length; ++i) {
         let source = sources[i];
 
-        if(typeof source != 'object'){
+        if (typeof source != 'object' || source == null) {
             continue;
         }
 
-        for(let skey in source){
-            if(!source.hasOwnProperty(skey)){
+        for (let skey in source) {
+            //只处理自身的key 这里可能来自于外部prototype的扩展
+            if (!source.hasOwnProperty(skey)) {
                 continue;
             }
 
-            if(source[skey] instanceof Date){
+            if (source[skey] instanceof Date) {
+                //Date类型 要克隆一份 保证深拷贝
                 target[skey] = new Date(source[skey]);
                 continue;
             }
-            else if(typeof(target[skey])=='object' && typeof(source[skey])=='object'){
+            else if (typeof (target[skey]) == 'object' && target[skey] != null && typeof (source[skey]) == 'object' && source[skey] != null) {
+                // 两个都是Object 递归merge之
                 Object.merge(target[skey], source[skey])
             }
-            else{
-                if(Array.isArray(source[skey])){
+            else {
+                if (Array.isArray(source[skey])) {
+                    // 数组merge后还是数组
                     target[skey] = Object.merge([], source[skey]);
                 }
-                else if(typeof(source[skey])=='object' && source[skey]!==null){
+                else if (typeof (source[skey]) == 'object' && source[skey] !== null) {
+                    // Object要克隆一份以确保深拷贝
                     target[skey] = Object.merge({}, source[skey]);
                 }
-                else{
+                else {
+                    // 基本类型 直接赋值即可
                     target[skey] = source[skey];
                 }
             }
@@ -43,19 +49,19 @@ Object.merge = function(target:any, ...sources: any[]){
     return target;
 }
 
-if(!Object.values){
-    Object.values = function(obj:any){
-        let output:any[] = [];
-        for(let k in obj as any){
+if (!Object.values) {
+    Object.values = function (obj: any) {
+        let output: any[] = [];
+        for (let k in obj as any) {
             obj.hasOwnProperty(k) && output.push(obj[k]);
         }
         return output;
     }
 }
 
-Object.forEach = function(obj:any, handler: (v:any, k:any, obj:object)=>void): void{
-    for(let key in obj as any){
-        if(!obj.hasOwnProperty(key)){
+Object.forEach = function (obj: any, handler: (v: any, k: any, obj: object) => void): void {
+    for (let key in obj as any) {
+        if (!obj.hasOwnProperty(key)) {
             return;
         }
         handler(obj[key], key, obj);
