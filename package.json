@@ -1,6 +1,6 @@
 {
   "name": "k8w-super-object",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Useful functions extended to native Object",
   "main": "index.js",
   "scripts": {
