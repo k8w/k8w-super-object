@@ -1,5 +1,5 @@
-interface ObjectConstructor{
-    merge(target: any, ...sources: any[]): any;
-    values(obj:object): any[];
-    forEach(obj:object, handler: (v:any, k:any, obj:object)=>void): void;
+interface ObjectConstructor {
+    merge<T = unknown>(target: any, ...sources: any[]): T;
+    values<T>(obj: T): T[keyof T][];
+    forEach<T>(obj: T, handler: (v: T[keyof T], k: keyof T & string, obj: T) => void): void;
 }

@@ -59,8 +59,8 @@ if (!Object.values) {
     }
 }
 
-Object.forEach = function (obj: any, handler: (v: any, k: any, obj: object) => void): void {
-    for (let key in obj as any) {
+Object.forEach = function <T>(obj: T, handler: (v: T[keyof T], k: keyof T & string, obj: T) => void): void {
+    for (let key in obj) {
         if (!obj.hasOwnProperty(key)) {
             return;
         }

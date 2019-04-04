@@ -18,7 +18,7 @@ describe('SuperObject', function () {
             }
         }
 
-        let b: any = {
+        let b = {
             b: 222,
             c: {
                 c2: [1, 2],
@@ -29,7 +29,7 @@ describe('SuperObject', function () {
             }
         }
 
-        let c = Object.merge({}, a, b);
+        let c = Object.merge({}, a, b) as any;
 
         assert.equal(b.c.c3.d(), 'ddd');
         assert.equal(c.c.c3.d(), 'ddd');
