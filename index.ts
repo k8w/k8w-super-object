@@ -59,9 +59,22 @@ if (!Object.values) {
     }
 }
 
+if (!Object.entries) {
+    Object.entries = function <T>(obj: { [s: string]: T }) {
+        let output: [string, T][] = [];
+        for (let key in obj) {
+            if (!(obj as Object).hasOwnProperty(key)) {
+                continue;
+            }
+            output.push([key, obj[key]]);
+        }
+        return output;
+    }
+}
+
 Object.forEach = function <T>(obj: T, handler: (v: T[keyof T], k: keyof T & string, obj: T) => void): void {
     for (let key in obj) {
-        if (!obj.hasOwnProperty(key)) {
+        if (!(obj as Object).hasOwnProperty(key)) {
             return;
         }
         handler(obj[key], key, obj);

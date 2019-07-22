@@ -1,3 +1,5 @@
+Object.merge = Object.entries = Object.values = Object.forEach = undefined as any;
+
 import '../index';
 const assert = require('assert');
 
@@ -116,5 +118,19 @@ describe('SuperObject', function () {
         assert.deepEqual(arrK, ['a', 'b', 'c', 'd'])
         assert.deepEqual(arrV, [1, 3, 5, 7])
         assert.deepEqual(obj, { a: 3, b: 5, c: 7, d: 9 })
+    })
+
+    it('Object.entries', function () {
+        assert.deepEqual(Object.entries({ a: 1, b: 2, c: 'cccc' }), [
+            ['a', 1],
+            ['b', 2],
+            ['c', 'cccc']
+        ])
+
+        assert.deepEqual(Object.entries(['a', 'b', 'c'] as any), [
+            ['0', 'a'],
+            ['1', 'b'],
+            ['2', 'c']
+        ])
     })
 })
